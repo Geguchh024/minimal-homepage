@@ -2,6 +2,8 @@
 
 A sleek, minimal Chrome new-tab extension with wallpaper themes, icon quick links, live time, saved local weather, developer news, and a settings panel.
 
+![Screenshot](assets/Screenshot_example.png)
+
 ## Features
 
 - Icon-only quick links with editable websites

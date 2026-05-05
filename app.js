@@ -3,7 +3,8 @@ const storageKeys = {
   theme: "minimal-new-tab-theme",
   density: "minimal-new-tab-density",
   weatherEnabled: "minimal-new-tab-weather-enabled",
-  weatherCache: "minimal-new-tab-weather-cache"
+  weatherCache: "minimal-new-tab-weather-cache",
+  customWallpaper: "minimal-new-tab-custom-wallpaper"
 };
 
 const defaultLinks = [
@@ -72,7 +73,9 @@ const elements = {
   densitySelect: document.querySelector("#density-select"),
   weatherToggle: document.querySelector("#weather-toggle"),
   settingsAddLink: document.querySelector("#settings-add-link"),
-  settingsLinks: document.querySelector("#settings-links")
+  settingsLinks: document.querySelector("#settings-links"),
+  wallpaperInput: document.querySelector("#wallpaper-input"),
+  resetWallpaper: document.querySelector("#reset-wallpaper")
 };
 
 function readJson(key, fallback) {
@@ -141,6 +144,43 @@ function applyTheme(theme) {
   elements.themeButtons.forEach((button) => {
     button.setAttribute("aria-pressed", String(button.dataset.themeOption === nextTheme));
   });
+
+  applyCustomWallpaper();
+}
+
+function applyCustomWallpaper() {
+  const customWallpaper = localStorage.getItem(storageKeys.customWallpaper);
+  if (customWallpaper) {
+    document.body.style.setProperty("--wallpaper", `url(${customWallpaper})`);
+  } else {
+    document.body.style.removeProperty("--wallpaper");
+  }
+}
+
+function handleWallpaperUpload(event) {
+  const file = event.target.files?.[0];
+  if (!file) {
+    return;
+  }
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please select a valid image file.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const dataUrl = e.target.result;
+    localStorage.setItem(storageKeys.customWallpaper, dataUrl);
+    applyCustomWallpaper();
+  };
+  reader.readAsDataURL(file);
+}
+
+function resetWallpaper() {
+  localStorage.removeItem(storageKeys.customWallpaper);
+  applyCustomWallpaper();
+  elements.wallpaperInput.value = "";
 }
 
 function applyDensity(density) {
@@ -194,35 +234,10 @@ function renderLinks() {
     const domain = document.createElement("small");
     domain.textContent = getDomain(link.url);
 
-    const actions = document.createElement("span");
-    actions.className = "link-actions";
-
-    const edit = document.createElement("button");
-    edit.className = "mini-button";
-    edit.type = "button";
-    edit.title = "Edit link";
-    edit.setAttribute("aria-label", `Edit ${link.name}`);
-    edit.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="M12 20h9"></path><path d="m16.5 3.5 4 4L7 21H3v-4L16.5 3.5Z"></path></svg>';
-    edit.addEventListener("click", () => openLinkDialog(index));
-
-    const remove = document.createElement("button");
-    remove.className = "mini-button danger";
-    remove.type = "button";
-    remove.title = "Remove link";
-    remove.setAttribute("aria-label", `Remove ${link.name}`);
-    remove.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="M18 6 6 18M6 6l12 12"></path></svg>';
-    remove.addEventListener("click", () => {
-      const nextLinks = getLinks().filter((_, itemIndex) => itemIndex !== index);
-      saveLinks(nextLinks.length ? nextLinks : defaultLinks);
-      renderLinks();
-      renderSettingsLinks();
-    });
-
     iconWrap.append(icon);
     text.append(label, domain);
     anchor.append(iconWrap, text);
-    actions.append(edit, remove);
-    item.append(anchor, actions);
+    item.append(anchor);
     elements.quickLinks.append(item);
   });
 }
@@ -572,6 +587,8 @@ function init() {
   elements.themeButtons.forEach((button) => {
     button.addEventListener("click", () => applyTheme(button.dataset.themeOption));
   });
+  elements.wallpaperInput.addEventListener("change", handleWallpaperUpload);
+  elements.resetWallpaper.addEventListener("click", resetWallpaper);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !elements.settingsLayer.hidden) {
       closeSettings();
