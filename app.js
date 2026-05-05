@@ -108,6 +108,19 @@ function saveLinks(links) {
   localStorage.setItem(storageKeys.links, JSON.stringify(links));
 }
 
+function moveLink(index, direction) {
+  const links = getLinks();
+  const nextIndex = index + direction;
+  if (nextIndex < 0 || nextIndex >= links.length) {
+    return;
+  }
+
+  [links[index], links[nextIndex]] = [links[nextIndex], links[index]];
+  saveLinks(links);
+  renderLinks();
+  renderSettingsLinks();
+}
+
 function getDomain(url) {
   try {
     return new URL(normalizeUrl(url)).hostname.replace(/^www\./, "");
@@ -183,6 +196,24 @@ function renderLinks() {
 
     const actions = document.createElement("span");
     actions.className = "link-actions";
+
+    const moveUp = document.createElement("button");
+    moveUp.className = "mini-button";
+    moveUp.type = "button";
+    moveUp.title = "Move link up";
+    moveUp.disabled = index === 0;
+    moveUp.setAttribute("aria-label", `Move ${link.name} up`);
+    moveUp.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="m18 15-6-6-6 6"></path></svg>';
+    moveUp.addEventListener("click", () => moveLink(index, -1));
+
+    const moveDown = document.createElement("button");
+    moveDown.className = "mini-button";
+    moveDown.type = "button";
+    moveDown.title = "Move link down";
+    moveDown.disabled = index === links.length - 1;
+    moveDown.setAttribute("aria-label", `Move ${link.name} down`);
+    moveDown.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="m6 9 6 6 6-6"></path></svg>';
+    moveDown.addEventListener("click", () => moveLink(index, 1));
 
     const edit = document.createElement("button");
     edit.className = "mini-button";
@@ -495,7 +526,11 @@ function renderSettingsLinks() {
     edit.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="M12 20h9"></path><path d="m16.5 3.5 4 4L7 21H3v-4L16.5 3.5Z"></path></svg>';
     edit.addEventListener("click", () => openLinkDialog(index));
 
-    row.append(icon, copy, edit);
+    const actions = document.createElement("span");
+    actions.className = "settings-link-actions";
+    actions.append(moveUp, moveDown, edit);
+
+    row.append(icon, copy, actions);
     elements.settingsLinks.append(row);
   });
 }
