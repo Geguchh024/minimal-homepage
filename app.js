@@ -168,11 +168,33 @@ function handleWallpaperUpload(event) {
     return;
   }
 
+  // Check file size (limit to 2MB to avoid quota issues)
+  const maxSize = 2 * 1024 * 1024; // 2MB
+  if (file.size > maxSize) {
+    alert("Image is too large. Please choose an image smaller than 2MB.");
+    elements.wallpaperInput.value = "";
+    return;
+  }
+
   const reader = new FileReader();
   reader.onload = (e) => {
     const dataUrl = e.target.result;
-    localStorage.setItem(storageKeys.customWallpaper, dataUrl);
-    applyCustomWallpaper();
+    try {
+      localStorage.setItem(storageKeys.customWallpaper, dataUrl);
+      applyCustomWallpaper();
+    } catch (error) {
+      if (error.name === "QuotaExceededError" || error.name === "NS_ERROR_DOM_QUOTA_REACHED") {
+        alert("Storage quota exceeded. Please choose a smaller image or clear browser data.");
+        elements.wallpaperInput.value = "";
+      } else {
+        alert("Failed to save wallpaper. Please try again.");
+        elements.wallpaperInput.value = "";
+      }
+    }
+  };
+  reader.onerror = () => {
+    alert("Failed to read the image file. Please try again.");
+    elements.wallpaperInput.value = "";
   };
   reader.readAsDataURL(file);
 }
