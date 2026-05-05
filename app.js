@@ -197,24 +197,6 @@ function renderLinks() {
     const actions = document.createElement("span");
     actions.className = "link-actions";
 
-    const moveUp = document.createElement("button");
-    moveUp.className = "mini-button";
-    moveUp.type = "button";
-    moveUp.title = "Move link up";
-    moveUp.disabled = index === 0;
-    moveUp.setAttribute("aria-label", `Move ${link.name} up`);
-    moveUp.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="m18 15-6-6-6 6"></path></svg>';
-    moveUp.addEventListener("click", () => moveLink(index, -1));
-
-    const moveDown = document.createElement("button");
-    moveDown.className = "mini-button";
-    moveDown.type = "button";
-    moveDown.title = "Move link down";
-    moveDown.disabled = index === links.length - 1;
-    moveDown.setAttribute("aria-label", `Move ${link.name} down`);
-    moveDown.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="m6 9 6 6 6-6"></path></svg>';
-    moveDown.addEventListener("click", () => moveLink(index, 1));
-
     const edit = document.createElement("button");
     edit.className = "mini-button";
     edit.type = "button";
@@ -517,6 +499,24 @@ function renderSettingsLinks() {
     const domain = document.createElement("small");
     domain.textContent = getDomain(link.url);
     copy.append(label, domain);
+
+    const moveUp = document.createElement("button");
+    moveUp.className = "mini-button";
+    moveUp.type = "button";
+    moveUp.title = "Move link up";
+    moveUp.disabled = index === 0;
+    moveUp.setAttribute("aria-label", `Move ${link.name} up`);
+    moveUp.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="m18 15-6-6-6 6"></path></svg>';
+    moveUp.addEventListener("click", () => moveLink(index, -1));
+
+    const moveDown = document.createElement("button");
+    moveDown.className = "mini-button";
+    moveDown.type = "button";
+    moveDown.title = "Move link down";
+    moveDown.disabled = index === links.length - 1;
+    moveDown.setAttribute("aria-label", `Move ${link.name} down`);
+    moveDown.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="m6 9 6 6 6-6"></path></svg>';
+    moveDown.addEventListener("click", () => moveLink(index, 1));
 
     const edit = document.createElement("button");
     edit.className = "mini-button";
