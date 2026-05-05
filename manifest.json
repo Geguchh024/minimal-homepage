@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Minimal Dev New Tab",
+  "name": "Minimal New Tab",
   "description": "A clean new tab with quick links, time, local weather, and developer news.",
   "version": "1.0.0",
   "chrome_url_overrides": {
