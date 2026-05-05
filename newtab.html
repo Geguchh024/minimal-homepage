@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <title>New Tab</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell" aria-label="New tab dashboard">
+      <section class="topbar" aria-label="Preferences">
+        <button class="icon-button settings-button" id="settings-open" type="button" aria-label="Open settings" title="Settings">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"></path>
+            <path d="M19.4 15a1.8 1.8 0 0 0 .36 1.98l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.8 1.8 0 0 0-1.98-.36 1.8 1.8 0 0 0-1.1 1.65V21a2 2 0 0 1-4 0v-.09a1.8 1.8 0 0 0-1.1-1.65 1.8 1.8 0 0 0-1.98.36l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.8 1.8 0 0 0 4.6 15a1.8 1.8 0 0 0-1.65-1.1H2.9a2 2 0 0 1 0-4h.09A1.8 1.8 0 0 0 4.6 8a1.8 1.8 0 0 0-.36-1.98l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.8 1.8 0 0 0 9 3.6a1.8 1.8 0 0 0 1.1-1.65V1.9a2 2 0 0 1 4 0v.09A1.8 1.8 0 0 0 15.2 3.6a1.8 1.8 0 0 0 1.98-.36l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.8 1.8 0 0 0 19.4 8c.1.33.29.63.53.88.25.24.55.43.88.53h.09a2 2 0 0 1 0 4h-.09A1.8 1.8 0 0 0 19.4 15Z"></path>
+          </svg>
+        </button>
+      </section>
+
+      <section class="hero" aria-labelledby="time-label">
+        <p class="kicker" id="greeting">Ready when you are</p>
+        <h1 class="time" id="time-label">00:00</h1>
+        <p class="date" id="date-label">Loading date</p>
+      </section>
+
+      <section class="panel search-panel" aria-label="Web search">
+        <form class="search" id="search-form" role="search">
+          <label class="sr-only" for="search-input">Search the web</label>
+          <span class="search-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="m21 21-4.35-4.35m2.35-5.15a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"></path>
+            </svg>
+          </span>
+          <input id="search-input" name="q" type="search" autocomplete="off" placeholder="Search or enter a URL">
+        </form>
+      </section>
+
+      <section class="grid" aria-label="Dashboard widgets">
+        <article class="panel links-panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Launch</p>
+              <h2>Quick links</h2>
+            </div>
+            <button class="icon-button" id="add-link-button" type="button" aria-label="Add website link" title="Add link">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="quick-links" id="quick-links" aria-live="polite"></div>
+        </article>
+
+        <article class="panel weather-panel" aria-labelledby="weather-title">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Outside</p>
+              <h2 id="weather-title">Weather</h2>
+            </div>
+            <button class="icon-button" id="weather-refresh" type="button" aria-label="Refresh weather" title="Refresh weather">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 5v4h4M4 13a8.1 8.1 0 0 0 15.5 2M20 19v-4h-4"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="weather-state" id="weather-state">
+            <p class="muted">Allow location access to show local weather.</p>
+            <button class="text-button" id="weather-enable" type="button">Enable weather</button>
+          </div>
+        </article>
+
+        <article class="panel news-panel" aria-labelledby="news-title">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Dev pulse</p>
+              <h2 id="news-title">Developer news</h2>
+            </div>
+            <button class="icon-button" id="news-refresh" type="button" aria-label="Refresh developer news" title="Refresh news">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 5v4h4M4 13a8.1 8.1 0 0 0 15.5 2M20 19v-4h-4"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="news-list" id="news-list" aria-live="polite"></div>
+        </article>
+      </section>
+    </main>
+
+    <dialog class="dialog" id="link-dialog" aria-labelledby="dialog-title">
+      <form class="dialog-card" id="link-form">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Shortcut</p>
+            <h2 id="dialog-title">Add website</h2>
+          </div>
+          <button class="icon-button" id="link-dialog-close" type="button" aria-label="Close" title="Close">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M18 6 6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <label>
+          <span>Name</span>
+          <input id="link-name" name="name" maxlength="24" required autocomplete="off">
+        </label>
+        <label>
+          <span>URL</span>
+          <input id="link-url" name="url" type="text" required placeholder="https://example.com" autocomplete="off" inputmode="url">
+        </label>
+        <div class="dialog-actions">
+          <button class="text-button subtle" id="link-dialog-cancel" type="button">Cancel</button>
+          <button class="text-button primary" id="save-link" value="default" type="submit">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="drawer-layer" id="settings-layer" hidden>
+      <button class="drawer-scrim" id="settings-scrim" type="button" aria-label="Close settings"></button>
+      <aside class="settings-drawer" id="settings-drawer" aria-labelledby="settings-title">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Control center</p>
+            <h2 id="settings-title">Settings</h2>
+          </div>
+          <button class="icon-button" id="settings-close" type="button" aria-label="Close settings" title="Close">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M18 6 6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <section class="settings-section" aria-labelledby="settings-theme-title">
+          <h3 id="settings-theme-title">Theme</h3>
+          <div class="theme-cards" id="settings-themes">
+            <button class="theme-card" type="button" data-theme-option="aurora">
+              <span class="theme-preview aurora" aria-hidden="true"></span>
+              <span>Aurora</span>
+              <small>Calm glass wallpaper</small>
+            </button>
+            <button class="theme-card" type="button" data-theme-option="graphite">
+              <span class="theme-preview graphite" aria-hidden="true"></span>
+              <span>Graphite</span>
+              <small>Dark studio wallpaper</small>
+            </button>
+            <button class="theme-card" type="button" data-theme-option="daylight">
+              <span class="theme-preview daylight" aria-hidden="true"></span>
+              <span>Daylight</span>
+              <small>Bright glass wallpaper</small>
+            </button>
+          </div>
+          <label class="field-row" for="density-select">
+            <span>Density</span>
+            <select id="density-select">
+              <option value="compact">Compact</option>
+              <option value="comfortable">Comfortable</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="settings-section" aria-labelledby="settings-weather-title">
+          <h3 id="settings-weather-title">Weather</h3>
+          <label class="toggle-row">
+            <span>Load weather automatically</span>
+            <input id="weather-toggle" type="checkbox">
+          </label>
+        </section>
+
+        <section class="settings-section" aria-labelledby="settings-links-title">
+          <div class="section-title-row">
+            <h3 id="settings-links-title">Quick links</h3>
+            <button class="text-button" id="settings-add-link" type="button">Add</button>
+          </div>
+          <div class="settings-links" id="settings-links"></div>
+        </section>
+      </aside>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Minimal Dev New Tab",
+  "description": "A clean new tab with quick links, time, local weather, and developer news.",
+  "version": "1.0.0",
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "permissions": [
+    "geolocation",
+    "search"
+  ],
+  "host_permissions": [
+    "https://api.open-meteo.com/*",
+    "https://hacker-news.firebaseio.com/*"
+  ]
+}
